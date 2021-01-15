@@ -5,7 +5,7 @@ import { buildApa } from "./apa/build-apa";
 import { buildChicagoAd } from "./chicago/build-chicagoad";
 import { buildChicagoNb } from "./chicago/build-chicagonb";
 import { buildMla } from "./mla/build-mla";
-import { Options, Source, SourceType } from "./interfaces";
+import { BookSubtype, JournalSubtype, Options, ParentTypes, PeriodicalSubtype, Source, SourceType, WebsiteSubtype } from "./interfaces";
 
 export function buildCitation(source: Source, options: Options = { style: 'apa' }) {
     switch (options.style) {
@@ -24,38 +24,34 @@ export function buildCitation(source: Source, options: Options = { style: 'apa' 
     };
 };
 
-export function detectType(source: Source): SourceType {
+export function detectType(source: Source): ParentTypes {
     if (source.type.type === 'journal' || source.journal) {
-        return {
-            type: 'journal',
-            subtype: 'standard'
-        };
+        return 'journal';
     } else if (source.type.type === 'periodical' || source.periodicalName) {
-        return {
-            type: 'periodical',
-            subtype: 'standard'
-        };
+        return 'periodical';
     } else if (source.type.type === 'website' || source.websiteName) {
-        return {
-            type: 'website',
-            subtype: 'standard'
-        };
-    } else if (source.type.subtype === 'anthology' || source.anthologyTitle) {
-        return {
-            type: 'book',
-            subtype: 'anthology'
-        };
+        return 'website';
     } else if (source.type.type === 'book') {
-        return {
-            type: 'book',
-            subtype: 'standard'
-        }
+        return 'book';
     } else {
-        return {
-            type: 'other',
-            subtype: 'other'
-        };
+        return 'other';
     }
 }
+
+export function detectSubtype(parent: ParentTypes, source: Source): BookSubtype | JournalSubtype | PeriodicalSubtype | WebsiteSubtype | 'other' {
+    switch (parent) {
+        case 'book':
+            if (source.anthologyTitle || source.type.subtype === 'anthology') { return 'anthology'; }
+            return 'standard';
+        case 'journal':
+            return 'standard';
+        case 'periodical':
+            return source.type.subtype;
+        case 'website':
+            return source.type.subtype;
+        case 'other':
+            return 'other';
+    };
+};
 
 

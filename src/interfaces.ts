@@ -36,6 +36,8 @@ export interface Other {
 
 export type SourceType = Book | Periodical | Journal | Website | Other;
 
+export type ParentTypes = 'book' | 'periodical' | 'journal' | 'website' | 'other';
+
 export interface Name {
     firstName?: string;
     middleName?: string;

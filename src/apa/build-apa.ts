@@ -1,312 +1,209 @@
 import { RawQuillDelta as Citation } from "quilljs-parser";
-import { detectType } from "../build-citation";
+import { detectSubtype, detectType } from "../build-citation";
 import { Name, Source } from "../interfaces";
 
+// MAIN EXPORT
 
 export function buildApa(source: Source): Citation {
-    let citation: Citation = {ops: []};
-    const detected = detectType(source);
-    if (detected.type === 'book') {
-        
+    switch (detectType(source)) {
+        case 'book':
+            return citeBook(source);
+        case 'journal':
+            return citeJournal(source);
+        case 'periodical':
+            return citePeriodical(source);
+        case 'website':
+            return citeWebsite(source);
+        case 'other': 
+            return citeOther(source);
     }
-    return citation;
 }
 
-export function citeBook(source: Source, citation: Citation) {
-    // authors
-    if (source.authors && source.authors.length > 0) {
-        insertAuthors(source.authors, citation);
-    }
-    // date
-    if (source.pubDate || source.pubYear) {
-        insertPubDate({pubYear: source.pubYear, pubDate: source.pubDate}, citation);
-    }
-    // title
-    if (source.title) {
-        insertTitle({title: source.title, edition: source.edition}, true, citation);
-    }
-    // source
-    if (source.publisher) {
-        citation.ops.push({
-            insert: source.publisher + '. '
-        });
-    }
-    if (source.doi) {
-        citation.ops.push({
-            insert: source.doi
-        });
-    } else if (source.url) {
-        citation.ops.push({
-            insert: source.url
-        });
-    }
-    console.log('citation', citation);
-    return citation;
-};
+// PARENT TYPE FUNCTIONS
 
-export function citeAnthology(source: Source, citation: Citation) {
-    if (source.title && source.startPage && source.endPage && source.authors && source.editors) {
-        // cite as chapter in edited book
-        insertAuthors(source.authors, citation);
-        insertPubDate({pubDate: source.pubDate, pubYear: source.pubYear}, citation);
-        citation.ops.push({
-            insert: source.title + '. '
-        });
-        insertEditors(source.editors, citation);
-        if (source.anthologyTitle) {
-            insertAnthologyTitle(source.anthologyTitle, source.edition, citation);
-        }
-        insertPageRange({start: source.startPage, end: source.endPage, edition: source.edition}, citation);
-        if (source.publisher) {
-            citation.ops.push({
-                insert: source.publisher + '. '
-            });
-        }
-        if (source.doi) {
-            citation.ops.push({
-                insert: source.doi
-            });
-        } else if (source.url) {
-            citation.ops.push({
-                insert: source.url
-            });
-        }
-        
-
-    } else {
-        // cite as whole edited book
-        if (source.editors) {
-            insertEditorAsAuthor(source.editors, citation);
-        }
-        if (source.pubDate || source.pubYear) {
-            insertPubDate({pubDate: source.pubDate, pubYear: source.pubYear}, citation);
-        }
-        if (source.anthologyTitle) {
-            insertTitle({title: source.anthologyTitle, edition: source.edition}, true, citation);
-        } else if (source.title) {
-            insertTitle({title: source.title, edition: source.edition}, true, citation);
-        }
-        if (source.publisher) {
-            citation.ops.push({
-                insert: source.publisher + '. '
-            });
-        }
-    }
-    return citation;
-};
-
-
-
-
-
-
-function insertTitle(info: {title: string, edition?: string}, italicize: boolean, citation: Citation) {
-    if (!info.title) {
-        throw new Error('No title.');
-    }
-    if (info.edition) {
-        if (italicize) {
-            citation.ops.push({
-                insert: info.title,
-                attributes: {
-                    italic: true
-                }
-            });
-            citation.ops.push({
-                insert: ' (' + parseEdition(info.edition) + '). '
-            });
-        } else {
-            citation.ops.push({
-                insert: info.title + ' (' + parseEdition(info.edition) + '). '
-            });
-        }
-    } else {
-        if (italicize) {
-            citation.ops.push({
-                insert: info.title + '. ',
-                attributes: {
-                    italic: true
-                }
-            });
-        } else {
-            citation.ops.push({
-                insert: info.title + '. '
-            });
-        }
+export function citeBook(source: Source): Citation {
+    switch (detectSubtype('book', source)) {
+        case 'anthology':
+            return citeAnthology(source);
+        case 'standard':
+            return citeStandardBook(source);
+        default:
+            return citeStandardBook(source);
     }
 };
 
-function insertEditors(editors: Name[], citation: Citation) {
-    let editorString = 'In';
-    editorString = editorString + (editors.length === 1 ? forwardNames(editors).slice(3) : forwardNames(editors).slice(1));
-    if (editors.length > 1) {
-        editorString += ' (Eds.), ';
-    } else {
-        editorString += ' (Ed.), ';
-    }
-    citation.ops.push({
-        insert: editorString
-    });
-};
-
-function insertAnthologyTitle(title: string, edition: string | undefined, citation: Citation) {
-    citation.ops.push({
-        insert: title + ' ',
-        attributes: {
-            italic: true
-        }
-    });
-};
-
-function insertPageRange(info: { start: string, end: string, edition?: string}, citation: Citation) {
-    if (info.edition) {
-        let string = '(' + parseEdition(info.edition) + ', ';
-        if (info.start === info.end) {
-            string += 'p. ' + info.start + '). ';
-        } else {
-            string += 'pp. ' + info.start + '-' + info.end + '). ';
-        }
-        citation.ops.push({
-            insert: string
-        });
-    } else {
-        if (info.start === info.end) {
-            citation.ops.push({
-                insert: '(p. ' + info.start
-            });
-        } else {
-            citation.ops.push({
-                insert: '(pp. ' + info.start + '-' + info.end + '). '
-            });
-        }
-    }
-
-    
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-export function buildApa2(source: Source): Citation {
+export function citeJournal(source: Source): Citation {
     let citation: Citation = { ops: [] };
-    // author component
-    if (source.authors && source.authors.length > 0) {
-        citation = insertAuthors(source.authors, citation);
-    } else if (source.editors && source.editors.length > 0) {
-        citation = insertEditorAsAuthor(source.editors, citation);
-    } else if (source.organization) {
-        citation = insertOrgAsAuthor(source.organization, citation);
-    }
-    // date component
-    if (source.pubYear || source.pubDate) {
-        citation = insertPubDate({pubYear: source.pubYear, pubDate: source.pubDate}, citation);
-    }
-    // title component
-    if (source.title || source.anthologyTitle) {
-        citation = insertTitle(source, citation);
-    }
-
-    // if it is a journal article
-    if (source.journal) {
-        let journalString = source.journal;
-        if (source.volume) {
-            journalString = journalString + ', ' + source.volume;
-        }
-        citation.ops.push({
-            insert: journalString,
-            attributes: {
-                italic: true
-            }
-        });
-        let details = '';
-        if (source.number) {
-            details = details + '(' + source.number + ')';
-        }
-        if (source.startPage && source.endPage) {
-            details = details + ', ' + source.startPage + '-' + source.endPage;
-        }
-        details = details + '. ';
-        if (source.doi) {
-            details = journalString + source.doi;
-        }
-    }
-
-
-    // source component
-        // journal name
-        // anthology name
-        // periodical name
-        // website name
-        // organization
-        // publisher
-        // editors
-        // translators
-        // volume, number, season
-        // pages
-        // doi/url
 
 
     return citation;
 }
-*/
 
-export function insertAuthors(rawAuthors: Name[], citation: Citation): Citation {
-    let authors = formatNames(rawAuthors);
-    if (authors.length === 0) {
-        throw new Error('No authors.');
-    }
-    let insert = '';
-    // handle first author
-    insert = insert + reversedName(authors[0]);
-    // handle subsequent authors
-    if (authors.length > 1) {
-        insert = insert + forwardNames(authors.slice(1));
-    }
-    // insert final period and space if necessary
-    if (!insert.match(/\.$/) && !insert.match(/\.\s$/)) {
-        insert = insert + '. ';
-    } else if (!insert.match(/\s$/)) {
-        insert = insert + ' ';
-    }
-    citation.ops.push({ insert: insert });
-    console.log({insert});
+export function citePeriodical(source: Source): Citation {
+    let citation: Citation = { ops: [] };
     return citation;
 }
 
-export function insertEditorAsAuthor(rawEditors: Name[], citation: Citation) {
-    let editors = formatNames(rawEditors);
-    if (rawEditors.length === 0) {
-        throw new Error('No editors.');
-    }
-    let insert = '';
-    insert = insert + reversedName(editors[0]);
-    if (editors.length > 1) {
-        insert = insert + forwardNames(editors.slice(1));
-    }
-    insert = insert + (editors.length > 1 ? ' (Eds.). ' : ' (Ed.). ');
-    citation.ops.push({ insert: insert });
-    console.log({insert});
+export function citeWebsite(source: Source): Citation {
+    let citation: Citation = { ops: [] };
     return citation;
 }
+
+export function citeOther(source: Source): Citation {
+    let citation: Citation = { ops: [] };
+    return citation;
+}
+
+// CHILD TYPE FUNCTIONS
+
+export function citeStandardBook(source: Source): Citation {
+    // does have edition?
+    // does it have translators?
+    // does it have an editor?
+    // original pub date?
+    // could have a doi or url at end
+    let citation: Citation = { ops: [] };
+    if (source.authors) {
+        insertStandardAuthors(source, citation);
+    }
+    if (source.pubYear) {
+        insertPubYear(source.pubYear, citation);
+    } else {
+        insertNoDate(citation);
+    }
+    if (source.title) {
+        insertTitle(source, true, citation);
+    }
+    if (source.publisher) {
+        insertPublisher(source.publisher, citation);
+    }
+
+
+    console.log(citation);
+    return citation;
+
+};
+
+export function citeAnthology(source: Source): Citation {
+    if (source.title && source.authors && source.editors && source.startPage && source.endPage) {
+        return citePartialAnthology(source);
+    } else {
+        return citeWholeAnthology(source);
+    }
+};
+
+export function citeWholeAnthology(source: Source): Citation {
+    
+    let citation: Citation = { ops: [] };
+    
+    return citation;
+};
+
+export function citePartialAnthology(source: Source): Citation {
+    if (!(source.authors && source.title && source.editors && source.startPage && source.endPage)) {
+        throw new Error('Missing anthology information');
+    }
+    let citation: Citation = { ops: [] };
+
+    return citation;
+};
+
+
+
+
+
+
+// INSERTERS
+
+function insertStandardAuthors(source: Source, citation: Citation) {
+    if (!source.authors) {
+        throw new Error('No authors to format');
+    }
+    let authorString = nameString(source.authors, true);
+
+    if (authorString.match(/\.$/)) {
+        authorString += ' ';
+    } else if (!authorString.match(/\.\w$/)) {
+        authorString += '. ';
+    }
+    citation.ops.push({
+        insert: authorString
+    });
+}
+
+function insertPubYear(year: string, citation: Citation) {
+    citation.ops.push({
+        insert: `(${year}). `
+    });
+};
+
+export function insertPubDate(rawDate: string, citation: Citation) {
+    let date = dateParser(rawDate);
+    citation.ops.push({
+        insert: `(${date}). `
+    });
+};
+
+function insertNoDate(citation: Citation) {
+    citation.ops.push({
+        insert: '(n.d.). '
+    });
+};
+
+function insertTitle(source: Source, italicize: boolean, citation: Citation) {
+    if (source.edition && !source.anthologyTitle) {
+        const edition = parseEdition(source.edition);
+        if (italicize) {
+            citation.ops.push({
+                insert: `${source.title} `,
+                attributes: {
+                    italic: true
+                }
+            });
+            citation.ops.push({
+                insert: `(${edition}). `
+            });
+        } else {
+            citation.ops.push({
+                insert: `${source.title} (${edition}). `
+            });
+        }
+    } else {
+        if (italicize) {
+            citation.ops.push({
+                insert: `${source.title}. `,
+                attributes: {
+                    italic: true
+                }
+            });
+        } else {
+            citation.ops.push({
+                insert: `${source.title}. `
+            });
+        }
+    }
+}
+
+function insertAnthologyTitle(source: Source, citation: Citation) {
+
+};
+
+function insertPublisher(publisher: string, citation: Citation) {
+    citation.ops.push({
+        insert: `${publisher}. `
+    });
+};
+
+
+
+
+
+
+
+
+// HELPER FUNCTIONS
+
+
 
 // formats the names (e.g., single initial for first and middle)
 function formatNames(names: Name[]): Name[] {
@@ -320,16 +217,7 @@ function formatNames(names: Name[]): Name[] {
     return formatted;
 }
 
-function reversedName(rawName: Name): string {
-    let name = formatNames([rawName]);
-    const firstName = name[0].firstName;
-    const middleName = name[0].middleName;
-    const lastName = name[0].lastName;
-    let nameString = (lastName ? lastName : '') + (lastName && firstName ? ', ' + firstName : '') + (lastName && firstName && middleName ? ' ' + middleName : '');
-    return nameString;
-}
-
-function forwardNames(rawNames: Name[]): string {
+function nameString(rawNames: Name[], firstReversed: boolean): string {
     let names = formatNames(rawNames);
     let string = '';
     let index = 0;
@@ -337,26 +225,20 @@ function forwardNames(rawNames: Name[]): string {
         const first = name.firstName;
         const middle = name.middleName;
         const last = name.lastName;
-        string = string + (index < names.length-1 ? ', ' : ', & ') + (first ? first : '') + (first && middle ? ' ' + middle : '') + (first && last ? ' ' + last : '');
+        if (index === 0) {
+            if (firstReversed) {
+                string += (last ? last : '') + (last && first ? ', ' + first : first ? first : '') + (middle ? ' ' + middle : '');
+            } else {
+                string += (first ? first : '') + (first && middle ? ' ' + middle : '') + (first && last ? ' ' + last : last ? last : '');
+            }
+        } else if (index < names.length-1) {
+            string += ', ' + (first ? first : '') + (first && middle ? ' ' + middle : '') + (first && last ? ' ' + last : last ? last : '');
+        } else {
+            string += ', & ' + (first ? first : '') + (first && middle ? ' ' + middle : '') + (first && last ? ' ' + last : last ? last : '');
+        }
         index++;
-    };
-    return string;
-}
-
-export function insertPubDate(rawDate: {pubDate?: string, pubYear?: string}, citation: Citation): Citation {
-    let string = '';
-    if (rawDate.pubDate) {
-        const date = dateParser(rawDate.pubDate);
-        string = '(' + date + '). ';
-    } else if (rawDate.pubYear) {
-        string = '(' + rawDate.pubYear.trim() + '). ';
-    } else {
-        string = '(n.d.). ';
     }
-    console.log({string});
-    citation.ops.push({ insert: string });
-    return citation;
-
+    return string;
 }
 
 export function dateParser(rawDate: string): string {
@@ -377,7 +259,7 @@ export function dateParser(rawDate: string): string {
     let string = (year ? year + ', ' : '') + (month ? month + ' ' : '') + (day ? day : '');
     console.log(string);
     return string;
-}
+};
 
 // takes a month string (jan or january) and converts to full
 function standardizeMonth(rawMonth: string) {
@@ -410,78 +292,7 @@ function standardizeMonth(rawMonth: string) {
     } else {
         return rawMonth;
     };
-}
-
-function insertOrgAsAuthor(org: string, citation: Citation): Citation {
-    citation.ops[0].insert = org + '. ';
-    return citation;
 };
-
-/*
-export function insertTitle(source: Source, citation: Citation): Citation {
-    if (!source.title && !source.anthologyTitle) {
-        throw new Error('Missing title.');
-    }
-    if (source.type.type === 'book') {
-        insertBookTitle(source, citation);
-    } else if (source.title && source.websiteName) {
-        citation.ops.push({
-            insert: source.title + '. ',
-            attributes: {
-                italic: true
-            }
-        });
-    } else {
-        const op = {
-            insert: source.title + '. '
-        };
-        citation.ops.push(op);
-    }
-    return citation;
-}
-*/
-
-function insertBookTitle(source: Source, citation: Citation) {
-    // anthology chapter or section
-    if (source.anthologyTitle && source.title) {
-        citation.ops.push({
-            insert: source.title + '. '
-        });
-    // whole anthology
-    } else if (source.anthologyTitle && !source.title) {
-        citation.ops.push({
-            insert: source.anthologyTitle + '. ',
-            attributes: {
-                italic: true
-            }
-        });
-    // book with edition
-    } else if (source.edition) {
-        const edition = parseEdition(source.edition.toLowerCase());
-        let titleOp = {
-            insert: source.title,
-            attributes: {
-                italic: true
-            }
-        };
-        citation.ops.push(titleOp);
-        let editionOp = {
-            insert: ' (' + edition + '). '
-        };
-        citation.ops.push(editionOp);
-    // book with no edition
-    } else {
-        let titleString = source.title + '. ';
-        citation.ops.push({
-            insert: titleString,
-            attributes: {
-                italic: true
-            }
-        });
-    }
-}
-
-
 
 export function parseEdition(raw: string): string {
     raw = raw.toLowerCase();
@@ -509,3 +320,9 @@ export function parseEdition(raw: string): string {
         return raw;
     }
 }
+
+
+
+
+
+

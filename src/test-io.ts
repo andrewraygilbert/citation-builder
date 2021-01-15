@@ -214,10 +214,7 @@ export const date_year_spaces_apa: RawQuillDelta = {
 
 // full date
 
-export const date_full = {
-    pubYear: '1954',
-    pubDate: 'December 13, 1954'
-};
+export const date_full = 'December 13, 1954';
 
 export const date_full_apa: RawQuillDelta = {
     ops: [{
@@ -227,10 +224,7 @@ export const date_full_apa: RawQuillDelta = {
 
 // full date lowercase
 
-export const date_full_lower = {
-    pubYear: '2016',
-    pubDate: '2016 jul 19'
-};
+export const date_full_lower = '2016 jul 19';
 
 export const date_full_lower_apa: RawQuillDelta = {
     ops: [{
@@ -240,10 +234,7 @@ export const date_full_lower_apa: RawQuillDelta = {
 
 // full date upper
 
-export const date_full_upper = {
-    pubYear: '1963',
-    pubDate: 'NOV 1963 21'
-};
+export const date_full_upper = 'NOV 1963 21'
 
 export const date_full_upper_apa: RawQuillDelta = {
     ops: [{
@@ -498,12 +489,12 @@ export const book_edition_apa: RawQuillDelta = {
     },{
         insert: '(1967). '
     },{
-        insert: 'An adventure through Mirkwood',
+        insert: 'An adventure through Mirkwood ',
         attributes: {
             italic: true
         }
     },{
-        insert: ' (2nd ed.). '
+        insert: '(2nd ed.). '
     },{
         insert: 'Shire Press. '
     }]
