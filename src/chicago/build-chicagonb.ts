@@ -1,4 +1,4 @@
-import { Source } from "./interfaces";
+import { Source } from "../interfaces";
 
 
 export function buildChicagoNb(source: Source) {

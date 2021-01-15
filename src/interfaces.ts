@@ -37,10 +37,10 @@ export interface Other {
 export type SourceType = Book | Periodical | Journal | Website | Other;
 
 export interface Name {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    suffix: string;
+    firstName?: string;
+    middleName?: string;
+    lastName?: string;
+    suffix?: string;
 }
 
 export interface Source {
