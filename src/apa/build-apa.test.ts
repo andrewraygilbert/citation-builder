@@ -1,7 +1,10 @@
 import { RawQuillDelta as Citation } from 'quilljs-parser';
 import { authors_single, authors_single_apa, authors_single_lastonly, authors_single_lastonly_apa, authors_single_lowercase, authors_single_lowercase_apa, authors_single_nomid, authors_single_nomid_apa, authors_single_uppercase, authors_three, authors_three_apa, authors_three_last_no_mid, authors_three_last_no_mid_apa, authors_two, authors_two_apa, book_edited, book_edited_apa, book_edited_chapter, book_edited_chapter_apa, book_edited_chapter_edition, book_edited_chapter_edition_apa, book_edited_whole_edition, book_edited_whole_edition_apa, book_edition, book_edition_apa, book_simple, book_simple_apa, date_full, date_full_apa, date_full_lower, date_full_lower_apa, date_full_upper, date_full_upper_apa, date_simple_year, date_simple_year_apa, date_year_spaces, date_year_spaces_apa, editors_early_one, editors_early_one_apa, editors_early_three, editors_early_three_apa, editors_early_two, editors_early_two_apa, title_anthology_chapter, title_anthology_chapter_apa, title_anthology_whole, title_anthology_whole_apa, title_book, title_book_apa, title_book_edition, title_book_edition_apa, title_journal, title_journal_apa, title_magazine, title_magazine_apa, title_news, title_news_apa, title_webpage, title_webpage_apa } from '../test-io';
-import { insertAuthors, insertEditorAsAuthor, citeBook, citeAnthology, insertPubDate } from './build-apa';
+import { citeBook, citeAnthology, insertPubDate } from './build-apa';
 
+
+
+/*
 describe('formats authors', () => {
 
     let citation: Citation = { ops: [] };
@@ -42,9 +45,6 @@ describe('formats authors', () => {
         expect(insertAuthors(authors_three_last_no_mid, citation)).toEqual(authors_three_last_no_mid_apa);
     });
 
-    
-
-
 });
 
 
@@ -69,6 +69,8 @@ describe('early editors', () => {
     });
 
 });
+
+*/
 
 describe('publication date', () => {
 
@@ -195,6 +197,22 @@ describe.only('standard book', () => {
 
     test('book w/ edition', () => {
         expect(citeBook(book_edition)).toEqual(book_edition_apa);
+    });
+
+    test('edited book whole', () => {
+        expect(citeBook(book_edited)).toEqual(book_edited_apa);
+    });
+
+    test('portion of edited book', () => {
+        expect(citeBook(book_edited_chapter)).toEqual(book_edited_chapter_apa);
+    });
+
+    test('portion of edited book w/ edition', () => {
+        expect(citeBook(book_edited_chapter_edition)).toEqual(book_edited_chapter_edition_apa);
+    });
+
+    test('edited book whole w/ edition', () => {
+        expect(citeBook(book_edited_whole_edition)).toEqual(book_edited_whole_edition_apa);
     });
 
 });

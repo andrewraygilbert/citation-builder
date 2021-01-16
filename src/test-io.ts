@@ -581,12 +581,12 @@ export const book_edited_whole_edition_apa: RawQuillDelta = {
     },{
         insert: '(1943). '
     },{
-        insert: 'A look at the darkness in the east',
+        insert: 'A look at the darkness in the east ',
         attributes: {
             italic: true
         }
     },{
-        insert: ' (3rd ed.). '
+        insert: '(3rd ed.). '
     },{
         insert: 'Middle Earth Books. '
     }]

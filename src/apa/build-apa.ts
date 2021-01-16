@@ -77,6 +77,15 @@ export function citeStandardBook(source: Source): Citation {
     if (source.publisher) {
         insertPublisher(source.publisher, citation);
     }
+    if (source.doi) {
+        citation.ops.push({
+            insert: source.doi
+        });
+    } else if (source.url) {
+        citation.ops.push({
+            insert: source.url
+        });
+    }
 
 
     console.log(citation);
@@ -95,7 +104,28 @@ export function citeAnthology(source: Source): Citation {
 export function citeWholeAnthology(source: Source): Citation {
     
     let citation: Citation = { ops: [] };
-    
+    if (source.editors) {
+        insertEditorsAsAuthors(source, citation);
+    }
+    if (source.pubYear) {
+        insertPubYear(source.pubYear, citation);
+    }
+    if (source.anthologyTitle || source.title) {
+        insertAnthologyTitleAsTitle(source, citation);
+    }
+    if (source.publisher) {
+        insertPublisher(source.publisher, citation);
+    }
+    if (source.doi) {
+        citation.ops.push({
+            insert: source.doi
+        });
+    } else if (source.url) {
+        citation.ops.push({
+            insert: source.url
+        });
+    }
+
     return citation;
 };
 
@@ -104,6 +134,26 @@ export function citePartialAnthology(source: Source): Citation {
         throw new Error('Missing anthology information');
     }
     let citation: Citation = { ops: [] };
+    insertStandardAuthors(source, citation);
+    if (source.pubYear) {
+        insertPubYear(source.pubYear, citation);
+    }
+    insertTitle(source, false, citation);
+    insertEditors(source, citation);
+    insertAnthologyTitle(source, citation);
+    insertAnthologyPages(source, citation);
+    if (source.publisher) {
+        insertPublisher(source.publisher, citation);
+    }
+    if (source.doi) {
+        citation.ops.push({
+            insert: source.doi
+        });
+    } else if (source.url) {
+        citation.ops.push({
+            insert: source.url
+        });
+    }
 
     return citation;
 };
@@ -129,7 +179,30 @@ function insertStandardAuthors(source: Source, citation: Citation) {
     citation.ops.push({
         insert: authorString
     });
-}
+};
+
+function insertEditorsAsAuthors(source: Source, citation: Citation) {
+    if (!source.editors) {
+        throw new Error('Missing editors.');
+    }
+    let editorString = nameString(source.editors, true);
+    editorString += source.editors.length > 1 ? ' (Eds.). ' : ' (Ed.). ';
+    citation.ops.push({
+        insert: editorString
+    });
+};
+
+function insertEditors(source: Source, citation: Citation) {
+    if (!source.editors) {
+        throw new Error('Missing editors.');
+    }
+    let string = 'In ';
+    let editors = nameString(source.editors, false);
+    string += editors + (source.editors.length > 1 ? ' (Eds.), ' : ' (Ed.), ');
+    citation.ops.push({
+        insert: string
+    });
+};
 
 function insertPubYear(year: string, citation: Citation) {
     citation.ops.push({
@@ -184,8 +257,50 @@ function insertTitle(source: Source, italicize: boolean, citation: Citation) {
     }
 }
 
-function insertAnthologyTitle(source: Source, citation: Citation) {
+function insertAnthologyTitleAsTitle(source: Source, citation: Citation) {
+    if (source.edition) {
+        const edition = parseEdition(source.edition);
+        citation.ops.push({
+            insert: `${source.anthologyTitle ? source.anthologyTitle : source.title } `,
+            attributes: {
+                italic: true
+            }
+        });
+        citation.ops.push({
+            insert: `(${edition}). `
+        });
+    } else {
+        citation.ops.push({
+            insert: `${source.anthologyTitle ? source.anthologyTitle : source.title }. `,
+            attributes: {
+                italic: true
+            }
+        });
+    }
+};
 
+function insertAnthologyTitle(source: Source, citation: Citation) {
+    citation.ops.push({
+        insert: source.anthologyTitle + ' ',
+        attributes: {
+            italic: true
+        }
+    });
+};
+
+function insertAnthologyPages(source: Source, citation: Citation) {
+    if (!source.startPage || !source.endPage) {
+        throw new Error('Missing pages.');
+    }
+    if (source.edition) {
+        citation.ops.push({
+            insert: `(${parseEdition(source.edition)}, ${pageString(source.startPage, source.endPage)}). `
+        })
+    } else {
+        citation.ops.push({
+            insert: `(${pageString(source.startPage, source.endPage)}). `
+        });
+    }
 };
 
 function insertPublisher(publisher: string, citation: Citation) {
@@ -201,9 +316,19 @@ function insertPublisher(publisher: string, citation: Citation) {
 
 
 
+
+
+
+
 // HELPER FUNCTIONS
 
-
+function pageString(start: string, end: string): string {
+    if (start === end) {
+        return `p. ${start}`;
+    } else {
+        return `pp. ${start}-${end}`;
+    }
+}
 
 // formats the names (e.g., single initial for first and middle)
 function formatNames(names: Name[]): Name[] {
