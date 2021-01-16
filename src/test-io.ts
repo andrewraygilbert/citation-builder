@@ -1,398 +1,6 @@
 import { RawQuillDelta } from "quilljs-parser";
 import { Name, Source } from "./interfaces";
 
-
-// AUTHORS
-
-// single author
-
-export const authors_single: Name[] = [{
-    firstName: 'Andrew',
-    middleName: 'Ray',
-    lastName: 'Gilbert'
-}];
-
-export const authors_single_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Gilbert, A. R. '
-    }]
-};
-
-// single author no middle name
-
-export const authors_single_nomid: Name[] = [{
-    firstName: 'Bilbo',
-    lastName: 'Baggins'
-}];
-
-export const authors_single_nomid_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Baggins, B. '
-    }]
-};
-
-// single author last name only
-
-export const authors_single_lastonly: Name[] = [{
-    lastName: 'Plato'
-}];
-
-export const authors_single_lastonly_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Plato. '
-    }]
-};
-
-// single author lowercase
-
-export const authors_single_lowercase: Name[] = [{
-    firstName: 'samwise',
-    middleName: 'brandybuck',
-    lastName: 'gamgee'
-}];
-
-export const authors_single_lowercase_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Gamgee, S. B. '
-    }]
-};
-
-// single author uppercase
-
-export const authors_single_uppercase: Name[] = [{
-    firstName: 'SAMWISE',
-    middleName: 'BRANDYBUCK',
-    lastName: 'GAMGEE'
-}];
-
-export const authors_single_uppercase_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Gamgee, S. B. '
-    }]
-}
-
-// two authors
-
-export const authors_two: Name[] = [{
-    firstName: 'Andrew',
-    middleName: 'Ray',
-    lastName: 'Gilbert'
-},{
-    firstName: 'Erica',
-    middleName: 'Christine',
-    lastName: 'Gilbert'
-}];
-
-export const authors_two_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Gilbert, A. R., & E. C. Gilbert. '
-    }]
-};
-
-// three authors
-
-export const authors_three: Name[] = [{
-    firstName: 'Bilbo',
-    lastName: 'Baggins'
-},{
-    firstName: 'Frodo',
-    lastName: 'Baggins'
-},{
-    firstName: 'Gandalf',
-    middleName: 'The',
-    lastName: 'Gray'
-}];
-
-export const authors_three_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Baggins, B., F. Baggins, & G. T. Gray. '
-    }]
-};
-
-// three authors, last no mid
-
-export const authors_three_last_no_mid: Name[] = [{
-    firstName: 'T.',
-    lastName: 'Oakenshield'
-},{
-    firstName: 'Gandalf',
-    lastName: 'Gray'
-},{
-    firstName: 'Legolas',
-    lastName: 'Greenleaf'
-}];
-
-export const authors_three_last_no_mid_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Oakenshield, T., G. Gray, & L. Greenleaf. '
-    }]
-};
-
-// EDITORS, NO AUTHORS
-
-// one editor
-
-export const editors_early_one: Name[] = [{
-    firstName: 'Dawn',
-    middleName: 'Jeglum',
-    lastName: 'Bartusch'
-}];
-
-export const editors_early_one_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Bartusch, D. J. (Ed.). '
-    }]
-};
-
-// two editors
-
-export const editors_early_two: Name[] = [{
-    firstName: 'James',
-    middleName: 'Paul',
-    lastName: 'Old'
-},{
-    firstName: 'Dawn',
-    middleName: 'Jeglum',
-    lastName: 'Bartusch'
-}];
-
-export const editors_early_two_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Old, J. P., & D. J. Bartusch (Eds.). '
-    }]
-};
-
-// three editors
-
-export const editors_early_three: Name[] = [{
-    firstName: 'Bilbo',
-    lastName: 'Baggins'
-},{
-    firstName: 'Gandalf',
-    middleName: 'T.',
-    lastName: 'Gray'
-},{
-    firstName: 'legolas',
-    lastName: 'greenleaf'
-}];
-
-export const editors_early_three_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Baggins, B., G. T. Gray, & L. Greenleaf (Eds.). '
-    }]
-};
-
-
-
-
-
-// DATES
-
-// simple year
-
-export const date_simple_year = {
-    pubYear: '2020'
-};
-
-export const date_simple_year_apa: RawQuillDelta = {
-    ops: [{
-        insert: '(2020). '
-    }]
-};
-
-// simple year, extra spaces
-
-export const date_year_spaces = {
-    pubYear: ' 2019  '
-};
-
-export const date_year_spaces_apa: RawQuillDelta = {
-    ops: [{
-        insert: '(2019). '
-    }]
-};
-
-// full date
-
-export const date_full = 'December 13, 1954';
-
-export const date_full_apa: RawQuillDelta = {
-    ops: [{
-        insert: '(1954, December 13). '
-    }]
-};
-
-// full date lowercase
-
-export const date_full_lower = '2016 jul 19';
-
-export const date_full_lower_apa: RawQuillDelta = {
-    ops: [{
-        insert: '(2016, July 19). '
-    }]
-};
-
-// full date upper
-
-export const date_full_upper = 'NOV 1963 21'
-
-export const date_full_upper_apa: RawQuillDelta = {
-    ops: [{
-        insert: '(1963, November 21). '
-    }]
-};
-
-// TITLES
-
-// book title
-export const title_book: Source = {
-    type: {
-        type: 'book',
-        subtype: 'standard'
-    },
-    title: 'The boundaries of blackness: Aids and the breakdown of black politics'
-};
-
-export const title_book_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'The boundaries of blackness: Aids and the breakdown of black politics. ',
-        attributes: {
-            italic: true
-        }
-    }]
-};
-
-// book title with edition
-
-export const title_book_edition: Source = {
-    type: {
-        type: 'book',
-        subtype: 'standard'
-    },
-    title: 'Philosophy of social science',
-    edition: 'fifth edition'
-};
-
-export const title_book_edition_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Philosophy of social science',
-        attributes: {
-            italic: true
-        }
-    },{
-        insert: ' (5th ed.). '
-    }]
-};
-
-// journal article title
-
-export const title_journal: Source = {
-    type: {
-        type: 'journal',
-        subtype: 'standard'
-    },
-    title: 'Conspiracy theories in mass opinion'
-};
-
-export const title_journal_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Conspiracy theories in mass opinion. '
-    }]
-};
-
-// news article title
-
-export const title_news: Source = {
-    type: {
-        type: 'periodical',
-        subtype: 'newspaper'
-    },
-    title: 'School shootings across America: A closer look',
-    periodicalName: 'The New York Times'
-};
-
-export const title_news_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'School shootings across America: A closer look. '
-    }]
-};
-
-// magazine article title
-
-export const title_magazine: Source = {
-    type: {
-        type: 'periodical',
-        subtype: 'magazine'
-    },
-    title: 'The nature of Trumpism in the modern world',
-    periodicalName: 'The Economist'
-};
-
-export const title_magazine_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'The nature of Trumpism in the modern world. '
-    }]
-};
-
-// anthology chapter title
-
-export const title_anthology_chapter: Source = {
-    type: {
-        type: 'book',
-        subtype: 'anthology'
-    },
-    title: 'A chapter title in an anthology',
-    anthologyTitle: 'Anthology of important works'
-};
-
-export const title_anthology_chapter_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'A chapter title in an anthology. '
-    }]
-};
-
-// entire anthology
-
-export const title_anthology_whole: Source = {
-    type: {
-        type: 'book',
-        subtype: 'anthology'
-    },
-    anthologyTitle: 'An anthology of works: A reader'
-};
-
-export const title_anthology_whole_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'An anthology of works: A reader. ',
-        attributes: {
-            italic: true
-        }
-    }]
-};
-
-// webpage
-
-export const title_webpage: Source = {
-    type: {
-        type: 'website',
-        subtype: 'standard'
-    },
-    title: 'Webpage on a website references',
-    websiteName: 'APA Style'
-};
-
-export const title_webpage_apa: RawQuillDelta = {
-    ops: [{
-        insert: 'Webpage on a website references. ',
-        attributes: {
-            italic: true
-        }
-    }]
-};
-
-
-
-
 /* BOOKS */
 
 export const book_simple: Source = {
@@ -425,8 +33,6 @@ export const book_simple_apa: RawQuillDelta = {
     }]
 };
 
-//
-
 export const book_edited: Source = {
     type: {
         type: 'book',
@@ -449,7 +55,7 @@ export const book_edited: Source = {
 
 export const book_edited_apa: RawQuillDelta = {
     ops: [{
-        insert: 'Saris, W. E., & P. M. Sniderman (Eds.). '
+        insert: 'Saris, W. E., & Sniderman, P. M. (Eds.). '
     },{
         insert: '(2004). '
     },{
@@ -461,8 +67,6 @@ export const book_edited_apa: RawQuillDelta = {
         insert: 'Princeton University Press. '
     }]
 };
-
-//
 
 export const book_edition: Source = {
     type: {
@@ -485,7 +89,7 @@ export const book_edition: Source = {
 
 export const book_edition_apa: RawQuillDelta = {
     ops: [{
-        insert: 'Baggins, B., & G. T. Gray. '
+        insert: 'Baggins, B., & Gray, G. T. '
     },{
         insert: '(1967). '
     },{
@@ -534,7 +138,7 @@ export const book_edited_chapter: Source = {
 
 export const book_edited_chapter_apa: RawQuillDelta = {
     ops: [{
-        insert: 'Sniderman, P. M., & S. M. Theriault. '
+        insert: 'Sniderman, P. M., & Theriault, S. M. '
     },{
         insert: '(2004). '
     },{
@@ -577,7 +181,7 @@ export const book_edited_whole_edition: Source = {
 
 export const book_edited_whole_edition_apa: RawQuillDelta = {
     ops: [{
-        insert: 'Greenleaf, L., G. T. Gray, & R. Brown (Eds.). '
+        insert: 'Greenleaf, L., Gray, G. T., & Brown, R. (Eds.). '
     },{
         insert: '(1943). '
     },{
@@ -621,7 +225,7 @@ export const book_edited_chapter_edition: Source = {
 
 export const book_edited_chapter_edition_apa: RawQuillDelta = {
     ops: [{
-        insert: 'Baggins, F. T., & B. Baggins. '
+        insert: 'Baggins, F. T., & Baggins, B. '
     },{
         insert: '(1988). '
     },{
@@ -638,4 +242,386 @@ export const book_edited_chapter_edition_apa: RawQuillDelta = {
     },{
         insert: 'Middle Earth Books. '
     }]
-}
+};
+
+export const book_original_pubyear: Source = {
+    type: {
+        type: 'book',
+        subtype: 'standard'
+    },
+    authors: [{
+        firstName: 'Gimli',
+        lastName: 'Dwarf'
+    },{
+        firstName: 'Thorin',
+        middleName: 'O.',
+        lastName: 'Oakenshield'
+    }],
+    title: 'History of Erebor',
+    pubYear: '1921',
+    originalPubYear: '1901',
+    publisher: 'Brandybuck Books'
+};
+
+export const book_original_pubyear_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Dwarf, G., & Oakenshield, T. O. '
+    },{
+        insert: '(1921). '
+    },{
+        insert: 'History of Erebor. ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'Brandybuck Books. '
+    },{
+        insert: '(Original work published 1901)'
+    }]
+};
+
+export const book_org_author: Source = {
+    type: {
+        type: 'book',
+        subtype: 'standard'
+    },
+    organization: 'Brookings Institution',
+    title: 'An analysis of the economy',
+    pubYear: '1988',
+    publisher: 'American Books'
+};
+
+export const book_org_author_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Brookings Institution. '
+    },{
+        insert: '(1988). '
+    },{
+        insert: 'An analysis of the economy. ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'American Books. '
+    }]
+};
+
+
+// JOURNAL ARTICLES
+
+export const journal_simple: Source = {
+    type: {
+        type: 'journal',
+        subtype: 'standard'
+    },
+    authors: [{
+        firstName: 'Paul',
+        middleName: 'M.',
+        lastName: 'Sniderman'
+    },{
+        firstName: 'Thomas',
+        lastName: 'Piazza'
+    },{
+        firstName: 'Philip',
+        middleName: 'E.',
+        lastName: 'Tetlock'
+    },{
+        firstName: 'Ann',
+        lastName: 'Kendrick'
+    }],
+    pubYear: '1991',
+    title: 'The new racism',
+    journal: 'American Journal of Political Science',
+    volume: '35',
+    number: '2',
+    month: 'May',
+    startPage: '423',
+    endPage: '447'
+};
+
+export const journal_simple_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Sniderman, P. M., Piazza, T., Tetlock, P. E., & Kendrick, A. '
+    },{
+        insert: '(1991). '
+    },{
+        insert: 'The new racism. '
+    },{
+        insert: 'American Journal of Political Science, 35',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: '(2), 423-447. '
+    }]
+};
+
+export const journal_pages_only: Source = {
+    type: {
+        type: 'journal',
+        subtype: 'standard'
+    },
+    authors: [{
+        firstName: 'Paul',
+        middleName: 'M.',
+        lastName: 'Sniderman'
+    },{
+        firstName: 'Thomas',
+        lastName: 'Piazza'
+    }],
+    pubYear: '1991',
+    title: 'The new racism',
+    journal: 'American Journal of Political Science',
+    month: 'May',
+    startPage: '423',
+    endPage: '447'
+};
+
+export const journal_pages_only_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Sniderman, P. M., & Piazza, T. '
+    },{
+        insert: '(1991). '
+    },{
+        insert: 'The new racism. '
+    },{
+        insert: 'American Journal of Political Science, ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: '423-447. '
+    }]
+};
+
+export const journal_only: Source = {
+    type: {
+        type: 'journal',
+        subtype: 'standard'
+    },
+    authors: [{
+        firstName: 'Paul',
+        middleName: 'M.',
+        lastName: 'Sniderman'
+    }],
+    pubYear: '1991',
+    title: 'The new racism',
+    journal: 'American Journal of Political Science',
+};
+
+export const journal_only_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Sniderman, P. M. '
+    },{
+        insert: '(1991). '
+    },{
+        insert: 'The new racism. '
+    },{
+        insert: 'American Journal of Political Science. ',
+        attributes: {
+            italic: true
+        }
+    }]
+};
+
+export const journal_doi: Source = {
+    type: {
+        type: 'journal',
+        subtype: 'standard'
+    },
+    authors: [{
+        firstName: 'Paul',
+        middleName: 'M.',
+        lastName: 'Sniderman'
+    }],
+    pubYear: '1991',
+    title: 'The new racism',
+    journal: 'American Journal of Political Science',
+    doi: 'https://myowndoi.org/ha987ashfla'
+};
+
+export const journal_doi_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Sniderman, P. M. '
+    },{
+        insert: '(1991). '
+    },{
+        insert: 'The new racism. '
+    },{
+        insert: 'American Journal of Political Science. ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'https://myowndoi.org/ha987ashfla'
+    }]
+};
+
+export const newspaper_simple: Source = {
+    type: {
+        type: 'periodical',
+        subtype: 'newspaper'
+    },
+    authors: [{
+        firstName: 'Bonnie',
+        lastName: 'Carey'
+    }],
+    pubDate: 'March 22, 2019',
+    pubYear: '2019',
+    title: 'Can we get better at forgetting?',
+    periodicalName: 'The New York Times',
+    url: 'https://www.nytimes.com/hereisthearticle'
+};
+
+export const newspaper_simple_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Carey, B. '
+    },{
+        insert: '(2019, March 22). '
+    },{
+        insert: 'Can we get better at forgetting? '
+    },{
+        insert: 'The New York Times. ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'https://www.nytimes.com/hereisthearticle'
+    }]
+};
+
+export const magazine_simple: Source = {
+    type: {
+        type: 'periodical',
+        subtype: 'magazine'
+    },
+    authors: [{
+        firstName: 'N.',
+        middleName: 'K.',
+        lastName: 'Schaefer'
+    },{
+        firstName: 'B.',
+        lastName: 'Shapiro'
+    }],
+    pubDate: 'sept 6 2019',
+    pubYear: '2019',
+    title: 'New middle chapter in the story of human evolution',
+    periodicalName: 'Science',
+    volume: '365',
+    number: '6457',
+    startPage: '981',
+    endPage: '982'
+};
+
+export const magazine_simple_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Schaefer, N. K., & Shapiro, B. '
+    },{
+        insert: '(2019, September 6). '
+    },{
+        insert: 'New middle chapter in the story of human evolution. '
+    },{
+        insert: 'Science, 365',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: '(6457), 981-982. '
+    }]
+};
+
+export const website_authors: Source = {
+    type: {
+        type: 'website',
+        subtype: 'standard'
+    },
+    authors: [{
+        firstName: 'Frank',
+        lastName: 'Giovanetti'
+    }],
+    pubDate: 'Nov 16, 2019',
+    title: 'Why are we so obsessed with personality types?',
+    websiteName: 'Medium',
+    url: 'https://medium.com/89efhio2u'
+};
+
+export const website_authors_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Giovanetti, F. '
+    },{
+        insert: '(2019, November 16). '
+    },{
+        insert: 'Why are we so obsessed with personality types? ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'Medium. '
+    },{
+        insert: 'https://medium.com/89efhio2u'
+    }]
+};
+
+export const website_orgonly: Source = {
+    type: {
+        type: 'website',
+        subtype: 'standard'
+    },
+    pubDate: 'July 2017',
+    title: 'The top 10 causes of death',
+    organization: 'World Health Organization',
+    url: 'https://who.org/as8oyaio'
+};
+
+export const website_orgonly_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'World Health Organization. '
+    },{
+        insert: '(2017, July). '
+    },{
+        insert: 'The top 10 causes of death. ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'https://who.org/as8oyaio'
+    }]
+};
+
+export const website_authors_org: Source = {
+    type: {
+        type: 'website',
+        subtype: 'standard'
+    },
+    pubDate: 'Apr 2021',
+    organization: 'National Institutes of Health',
+    authors: [{
+        firstName: 'J.',
+        middleName: 'P.',
+        lastName: 'Barron'
+    },{
+        firstName: 'A.',
+        middleName: 'B.',
+        lastName: 'Zachowski'
+    }],
+    title: 'The role of dementia in forgetfullness',
+    url: 'https://nih.org/kjaw3tlj2k4j'
+};
+
+export const website_authors_org_apa: RawQuillDelta = {
+    ops: [{
+        insert: 'Barron, J. P., & Zachowski, A. B. '
+    },{
+        insert: '(2021, April). '
+    },{
+        insert: 'The role of dementia in forgetfullness. ',
+        attributes: {
+            italic: true
+        }
+    },{
+        insert: 'National Institutes of Health. '
+    },{
+        insert: 'https://nih.org/kjaw3tlj2k4j'
+    }]
+};
+

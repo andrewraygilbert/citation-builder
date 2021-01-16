@@ -52,6 +52,7 @@ export interface Source {
     type: SourceType;
     title?: string;
     pubYear?: string;
+    originalPubYear?: string;
     pubDate?: string;
     accessedDate?: string;
     publisher?: string;
