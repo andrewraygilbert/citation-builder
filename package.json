@@ -1,6 +1,6 @@
 {
   "name": "@andrewraygilbert/citation-builder",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Build a citation",
   "main": "./dist/main.js",
   "scripts": {
