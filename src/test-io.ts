@@ -1,5 +1,5 @@
 import { RawQuillDelta } from "quilljs-parser";
-import { Name, Source } from "./interfaces";
+import { Source } from "./interfaces";
 
 /* BOOKS */
 

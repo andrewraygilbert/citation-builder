@@ -1,4 +1,3 @@
-import { RawQuillDelta as Citation } from 'quilljs-parser';
 import { book_edited, book_edited_apa, book_edited_chapter, book_edited_chapter_apa, book_edited_chapter_edition, book_edited_chapter_edition_apa, book_edited_whole_edition, book_edited_whole_edition_apa, book_edition, book_edition_apa, book_org_author, book_org_author_apa, book_original_pubyear, book_original_pubyear_apa, book_simple, book_simple_apa, journal_doi, journal_doi_apa, journal_only, journal_only_apa, journal_pages_only, journal_pages_only_apa, journal_simple, journal_simple_apa, magazine_simple, magazine_simple_apa, newspaper_simple, newspaper_simple_apa, website_authors, website_authors_apa, website_authors_org, website_authors_org_apa, website_orgonly, website_orgonly_apa } from '../test-io';
 import { citeBook, citeJournal, citePeriodical, citeWebsite } from './build-apa';
 
