@@ -6,21 +6,20 @@ import { buildChicagoAd } from "./chicago/build-chicagoad";
 import { buildChicagoNb } from "./chicago/build-chicagonb";
 import { buildMla } from "./mla/build-mla";
 import { BookSubtype, JournalSubtype, Options, ParentTypes, PeriodicalSubtype, Source, SourceType, WebsiteSubtype } from "./interfaces";
+import { RawQuillDelta } from "quilljs-parser";
 
-export function buildCitation(source: Source, options: Options = { style: 'apa' }) {
+export function buildCitation(source: Source, options: Options = { style: 'apa' }): RawQuillDelta {
     switch (options.style) {
         case 'apa':
-            buildApa(source);
-            break;
+            return buildApa(source);
         case 'mla':
-            buildMla(source);
-            break;
+            return buildMla(source);
         case 'chicago-ad':
-            buildChicagoAd(source);
-            break;
+            return buildChicagoAd(source);
         case 'chicago-nb':
-            buildChicagoNb(source);
-            break;
+            return buildChicagoNb(source);
+        default:
+            return buildApa(source);
     };
 };
 
