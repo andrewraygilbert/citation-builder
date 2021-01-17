@@ -1,3 +1,4 @@
+import { RawQuillDelta } from "quilljs-parser";
 import { Source } from "../interfaces";
 
 
