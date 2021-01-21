@@ -11,15 +11,25 @@ import { RawQuillDelta } from "quilljs-parser";
 export function buildCitation(source: Source, options: Options = { style: 'apa' }): RawQuillDelta {
     switch (options.style) {
         case 'apa':
-            return buildApa(source);
+            let delta = buildApa(source);
+            delta.ops.push({ insert: '\n', attributes: { citation: true } as any });
+            return delta;
         case 'mla':
-            return buildMla(source);
+            delta = buildMla(source);
+            delta.ops.push({ insert: '\n', attributes: { citation: true } as any });
+            return delta;
         case 'chicago-ad':
-            return buildChicagoAd(source);
+            delta = buildChicagoAd(source);
+            delta.ops.push({ insert: '\n', attributes: { citation: true } as any });
+            return delta;
         case 'chicago-nb':
-            return buildChicagoNb(source);
+            delta = buildChicagoNb(source);
+            delta.ops.push({ insert: '\n', attributes: { citation: true } as any });
+            return delta;
         default:
-            return buildApa(source);
+            delta = buildApa(source);
+            delta.ops.push({ insert: '\n', attributes: { citation: true } as any });
+            return delta;
     };
 };
 
