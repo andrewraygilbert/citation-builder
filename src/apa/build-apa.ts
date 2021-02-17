@@ -8,8 +8,6 @@ export function buildApa(source: Source): Citation {
     switch (detectType(source)) {
         case 'book':
             return citeBook(source);
-        case 'journal':
-            return citeJournal(source);
         case 'periodical':
             return citePeriodical(source);
         case 'website':
@@ -32,6 +30,15 @@ export function citeBook(source: Source): Citation {
     }
 };
 
+export function citePeriodical(source: Source): Citation {
+    switch (detectSubtype('periodical', source)) {
+        case 'journal':
+            return citeJournal(source);
+        default: 
+            return citeGenericPeriodical(source);
+    }
+}
+
 export function citeJournal(source: Source): Citation {
     let citation: Citation = { ops: [] };
     if (source.authors) {
@@ -50,7 +57,7 @@ export function citeJournal(source: Source): Citation {
     return citation;
 };
 
-export function citePeriodical(source: Source): Citation {
+export function citeGenericPeriodical(source: Source): Citation {
     let citation: Citation = { ops: [] };
     insertStandardAuthors(source, citation);
     if (source.pubDate) {

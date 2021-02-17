@@ -311,8 +311,8 @@ export const book_org_author_apa: RawQuillDelta = {
 
 export const journal_simple: Source = {
     type: {
-        type: 'journal',
-        subtype: 'standard'
+        type: 'periodical',
+        subtype: 'journal'
     },
     authors: [{
         firstName: 'Paul',
@@ -358,8 +358,8 @@ export const journal_simple_apa: RawQuillDelta = {
 
 export const journal_pages_only: Source = {
     type: {
-        type: 'journal',
-        subtype: 'standard'
+        type: 'periodical',
+        subtype: 'journal'
     },
     authors: [{
         firstName: 'Paul',
@@ -396,8 +396,8 @@ export const journal_pages_only_apa: RawQuillDelta = {
 
 export const journal_only: Source = {
     type: {
-        type: 'journal',
-        subtype: 'standard'
+        type: 'periodical',
+        subtype: 'journal'
     },
     authors: [{
         firstName: 'Paul',
@@ -426,8 +426,8 @@ export const journal_only_apa: RawQuillDelta = {
 
 export const journal_doi: Source = {
     type: {
-        type: 'journal',
-        subtype: 'standard'
+        type: 'periodical',
+        subtype: 'journal'
     },
     authors: [{
         firstName: 'Paul',

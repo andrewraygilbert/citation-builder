@@ -5,8 +5,7 @@ export interface Options {
 export type Style = 'apa' | 'chicago-nb' | 'chicago-ad' | 'mla';
 
 export type BookSubtype = 'standard' | 'anthology' | 'other';
-export type JournalSubtype = 'standard' | 'other';
-export type PeriodicalSubtype = 'standard' | 'newspaper' | 'magazine' | 'report' | 'other';
+export type PeriodicalSubtype = 'journal' | 'newspaper' | 'magazine' | 'report' | 'other';
 export type WebsiteSubtype = 'standard' | 'other';
 
 export interface Book {
@@ -19,11 +18,6 @@ export interface Periodical {
     subtype: PeriodicalSubtype;
 }
 
-export interface Journal {
-    type: 'journal';
-    subtype: JournalSubtype;
-}
-
 export interface Website {
     type: 'website';
     subtype: WebsiteSubtype;
@@ -34,9 +28,9 @@ export interface Other {
     subtype: 'other';
 }
 
-export type SourceType = Book | Periodical | Journal | Website | Other;
+export type SourceType = Book | Periodical | Website | Other;
 
-export type ParentTypes = 'book' | 'periodical' | 'journal' | 'website' | 'other';
+export type ParentTypes = 'book' | 'periodical' | 'website' | 'other';
 
 export interface Name {
     firstName?: string;
